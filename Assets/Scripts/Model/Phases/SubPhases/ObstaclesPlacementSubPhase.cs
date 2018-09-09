@@ -324,7 +324,8 @@ namespace SubPhases
                 if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
                     RaycastHit hitInfo = new RaycastHit();
-                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo))
+                    if (Input.mousePosition.x <= Screen.width && Input.mousePosition.y <= Screen.height && 
+                        Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo))
                     {
                         if (hitInfo.transform.tag.StartsWith("Asteroid"))
                         {
