@@ -95,7 +95,7 @@ namespace SubPhases
         {
             if (Roster.GetPlayer(RequiredPlayer).GetType() != typeof(HumanPlayer)) return;
 
-            TryToSelectObstacle()
+            TryToSelectObstacle();
         }
 
         private void TryToSelectObstacle()
