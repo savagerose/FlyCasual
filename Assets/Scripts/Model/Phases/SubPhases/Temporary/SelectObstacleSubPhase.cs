@@ -95,7 +95,7 @@ namespace SubPhases
         {
             if (Roster.GetPlayer(RequiredPlayer).GetType() != typeof(HumanPlayer)) return;
 
-            TryToSelectObstacle();
+            TryToSelectObstacle()
         }
 
         private void TryToSelectObstacle()
@@ -105,7 +105,7 @@ namespace SubPhases
                 if (Input.GetKeyUp(KeyCode.Mouse0))
                 {
                     RaycastHit hitInfo = new RaycastHit();
-                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo))
+                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo)) //TODO: add check to all calls to ScreenPointToRay -- need to make a helper function, find somewhere to put it...??? alternatively, in code that reports errors just ignore these...? could hide other bugs tho
                     {
                         if (hitInfo.transform.tag.StartsWith("Asteroid"))
                         {
