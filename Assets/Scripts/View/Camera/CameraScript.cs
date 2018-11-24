@@ -38,9 +38,9 @@ public class CameraScript : MonoBehaviour {
     private const float THRESHOLD_TOUCH_ZOOM = 0.06f;
     private const float THRESHOLD_TOUCH_ZOOM_SWITCH = 30f;
     private const float THRESHOLD_TOUCH_ZOOM_START = 20f;
-    private const float FRICTION_TOUCH_MOVE_MOMENTUM = 0.05f;
-    private const float MOMENTUM_THRESHOLD = 1600f; 
-    private const float MOMENTUM_MINIMUM = 0.25f;
+    private const float FRICTION_TOUCH_MOVE_MOMENTUM = 0.05f; // .03 seems too much to be satisfying
+    private const float MOMENTUM_THRESHOLD = 1600f;  // 1400 seems too low until a window / moving average is added
+    private const float MOMENTUM_MINIMUM = 0.25f; // .2 doesn't seem necessary
 
     // State for touch controls
     private float initialPinchMagnitude = 0f; // Magnitude of the pinch when 2 fingers are first put on the screen
@@ -429,6 +429,8 @@ public class CameraScript : MonoBehaviour {
                                             Mathf.Lerp(SENSITIVITY_TOUCH_MOVE_ZOOMED_IN,
                                                        SENSITIVITY_TOUCH_MOVE,
                                                        zoomPercent));
+                if (Console.IsActive) Console.Write("Zoomlevel:" + zoomPercent, LogTypes.Errors, true, "cyan");
+                if (Console.IsActive) Console.Write("sensitivity:" + moveSensitivityForCurrentZoom, LogTypes.Errors, true, "cyan");
 
                 if (Input.GetTouch(0).phase == TouchPhase.Moved)
                 {
@@ -450,6 +452,8 @@ public class CameraScript : MonoBehaviour {
 
                 // Keep incrementing duration while 1 finger is down even if no movement is happening
                 totalTouchMoveDuration += Time.deltaTime;
+
+                if (Console.IsActive) Console.Write("totaltouchmagnitude:" + totalTouchMove.magnitude / totalTouchMoveDuration, LogTypes.Errors, true, "cyan");
 
                 if (totalTouchMove.magnitude / totalTouchMoveDuration > MOMENTUM_THRESHOLD * moveSensitivityForCurrentZoom)
                 {
@@ -474,6 +478,12 @@ public class CameraScript : MonoBehaviour {
             transform.Translate(x, y, 0);
 
         }
+        //Do not commit this :) for debugging, though a way to at least hide the console after errors would be good! But something less hidden than this probably, maybe just a close button
+        else if (Input.touchCount > 2 && Input.GetTouch(2).phase == TouchPhase.Ended)
+        {
+            Console.IsActive = !Console.IsActive;
+        }
+
     }
 
 
